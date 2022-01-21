@@ -1,0 +1,42 @@
+#Res=cursion + Memoization
+def f(arr,ind,k,dp):
+    if (ind <= 0):
+        return 0
+    if (dp[ind] != -1): return dp[ind]
+    minSteps=9999999
+    for j in range(1,k+1):
+        if (ind - j >= 0):
+            jumps=f(arr,ind-j,k,dp) + abs(arr[ind] - arr[ind-j])
+            minSteps=min(jumps,minSteps)
+    dp[ind]=minSteps
+    return dp[ind]
+    
+def frogJump2(arr,n,k,dp):
+    ans=f(arr,n-1,k,dp)
+    return ans
+arr=[40 ,10 ,20 ,70 ,80 ,10 ,20 ,70 ,80 ,60]
+n=len(arr)
+k=4
+dp=[-1]*(n+1)
+print(frogJump2(arr,n,k,dp))
+
+
+#bottom-up
+def frogJump2(arr,n,k):
+    dp=[-1]*(n)
+    dp[0]=0
+    for i in range(1,n):
+        minSteps=99999999
+        for j in range(1,k+1):
+            if (i - j >= 0):
+                jumps=dp[i-j] + abs(arr[i] - arr[i-j])
+                minSteps=min(minSteps,jumps)
+        dp[i]=minSteps
+    return dp[n-1]    
+    
+arr=[40 ,10 ,20 ,70 ,80 ,10 ,20 ,70 ,80 ,60]
+n=len(arr)
+k=4
+print(frogJump2(arr,n,k))
+
+
