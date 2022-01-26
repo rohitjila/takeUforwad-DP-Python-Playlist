@@ -1,0 +1,24 @@
+Recursion + Memoization 
+from typing import *
+def f(days,last,points,dp):
+    if (days == 0):
+        maxi = 0
+        for task in range(3):
+            if (task != last):
+                maxi = max(points[0][task],maxi)
+        return maxi
+    if (dp[days][last] != -1): return dp[days][last]
+    maxi = 0
+    for task in range(0,3):
+        if (task != last):
+        	point = points[days][task] + f(days-1,task,points,dp)
+        	maxi=max(point,maxi)
+    dp[days][last] = maxi
+    return dp[days][last]
+     
+def ninjaTraining(n: int, points: List[List[int]]) -> int:
+    dp=[[-1 for i in range(4)] for i in range(n)]
+    return f(n-1,3,points,dp)
+
+    # Write your code here.
+    pass
