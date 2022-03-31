@@ -1,0 +1,88 @@
+from sys import stdin, setrecursionlimit
+setrecursionlimit(10**7)
+def getMaxPathSum(matrix):
+    n =len(matrix)
+    m =len(matrix[0])
+    dp=[[-1 for j in range(m+1)] for i in range(n+1)]
+    for j in range(m):
+        dp[0][j] = matrix[0][j]
+        
+	for i in range(1,n):
+        for j in range(0,m):
+            left=matrix[i][j] 
+            if (j-1 >= 0): left+=dp[i-1,j-1]
+            else: left+=-1e9
+    		right=matrix[i][j] 
+            if (j+1 < m): right+=dp[i-1,j+1]
+            else: right+=-1e9
+    		up=matrix[i][j] + dp[i-1,j]
+            dp[i][j]= max(left,max(up,right))
+            
+	maxi=0
+	for j in range(m):
+        maxi=max(maxi,dp[0][j])
+	return maxi
+# 	dp=[[-1 for i in range(m+1)] for j in range(n+1)]
+#     maxi=-1e9
+#     for j in range(m):
+#         maxi=max(maxi,solve(n-1,j,matrix,n,m,dp))
+#     return maxi
+    
+def solve(i,j,matrix,n,m,dp):
+    
+        
+    if (j < 0 or j >= m):
+        return -1e9
+    if (i == 0):
+        return matrix[0][j]
+    if (dp[i][j] != -1):
+        return dp[i][j]
+    left=matrix[i][j] + solve(i-1,j-1,matrix,n,m,dp)
+    right=matrix[i][j] + solve(i-1,j+1,matrix,n,m,dp)
+    up=matrix[i][j] + solve(i-1,j,matrix,n,m,dp)
+   	dp[i][j]= max(left,max(up,right))
+	return dp[i][j]    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#   taking inpit using fast I/O
+def takeInput() :
+    n_x = stdin.readline().strip().split(" ")
+    n = int(n_x[0].strip())
+    m = int(n_x[1].strip())
+
+    matrix=[list(map(int, stdin.readline().strip().split(" "))) for row in range(n)]
+
+    return matrix, n, m
+
+
+#   main
+T = int(input())
+while (T > 0):
+    T -= 1
+    matrix, n, m = takeInput()
+    print(getMaxPathSum(matrix))
